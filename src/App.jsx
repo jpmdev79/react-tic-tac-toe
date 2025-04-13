@@ -37,7 +37,7 @@ function App() {
     [2, 4, 6]
   ]
   const checkWinner = (boardToCheck) => {
-    for(const combo of WINNER_COMBOS) {
+    for (const combo of WINNER_COMBOS) {
       if (
         boardToCheck[combo[0]] &&
         boardToCheck[combo[0]] == boardToCheck[combo[1]] &&
@@ -45,9 +45,15 @@ function App() {
       ) {
         console.log('En ', combo, ' las posiciones son iguales, y el ganador es ', boardToCheck[combo[0]]);
         return boardToCheck[combo[0]]
-      }      
+      }
     }
     return null
+  }
+
+  const resetGame = () => {
+    setWinner(null)
+    setBoard(defaultBoard)
+    setTurn(TURNS.X)
   }
 
   const [winner, setWinner] = useState(null)
@@ -69,7 +75,6 @@ function App() {
     const newWinner = checkWinner(newBoard)
     console.log('newWinner: ', newWinner);
     if (newWinner) {
-      console.log('asignamos ', newWinner, ' a winner')
       setWinner(newWinner)
     }
   }
@@ -77,6 +82,7 @@ function App() {
   return (
     <main className='board'>
       <h1>Tic tac toe</h1>
+      <button onClick={resetGame}>Reset del juego</button>
       <section className="game">
         {
           board.map((_, index) => {
@@ -99,6 +105,27 @@ function App() {
           {TURNS.O}
         </Square>
       </section>
+
+      {
+        winner !== null && (
+          <section className='winner'>
+            <div className='text'>
+              <h2>{
+                winner === false ? 'Empate' : 'Ganó:'
+              }</h2>
+            
+
+            <header className='win'>
+              {winner && <Square>{winner}</Square>}
+            </header>
+
+              <footer>
+                <button onClick={resetGame}>Empezar de nuevo</button>
+              </footer>
+            </div>
+          </section>
+        )
+      }
     </main>
   )
 }
